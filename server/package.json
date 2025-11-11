@@ -1,0 +1,8 @@
+{
+  "type": "module",
+  "dependencies": {
+    "express": "^4.21.1",
+    "ioredis": "^5.4.1",
+    "nanoid": "^5.0.7"
+  }
+}

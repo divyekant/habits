@@ -1,0 +1,447 @@
+# Habits Tracker v2.0 — Complete Implementation
+
+**Tier 1 & 2 Features • Light/Dark Mode • Smart Insights • Beautiful UI**
+
+A modern, multi-tenant habit tracker with goal-based streaks, flexible tracking, smart insights, and confetti celebrations 🎉
+
+---
+
+## 🎯 What's New in v2.0
+
+### **Tier 1: Essential UX**
+
+✅ **Better Habit Creation**
+- Visual template cards (Reading 📚, Workout 💪, Weight ⚖️, Water 💧, Sleep 😴, Custom ✨)
+- Pre-filled suggestions for units and goals
+- Inline helpful hints
+- Beautiful modal design
+
+✅ **Improved Logging Experience**
+- Context-aware log modal (shows yesterday, streak, goal, 7-day avg)
+- Quick action buttons: "Hit Goal" and "Skip Today"
+- Custom amount input with stepper buttons (+1, +5, +10)
+- Note field for daily reflections
+- Confetti animation when goals are hit 🎉
+- Visual feedback for streaks 🔥
+
+✅ **Enhanced Stats Dashboard**
+- View toggles: 7 days / 30 days / 90 days
+- Trend indicators: ↑ Improving, → Stable, ↓ Declining
+- Color-coded completion rates with labels
+- Goal progress bars with visual fill
+- Larger heatmap cells (16px) with hover tooltips
+- Personal records highlighted
+
+✅ **Mobile-First UI Polish**
+- Fully responsive grid layout
+- Large touch targets (44px minimum)
+- Optimized for all screen sizes
+- Smooth animations and transitions
+
+### **Tier 2: Power User Features**
+
+✅ **Habit Detail View**
+- Click any habit name to open detail modal
+- Hero section with large icon and stats
+- Quick stats grid (current streak, longest, days logged, avg/day)
+- Personal best display 🏆
+- Full 30-day heatmap with tooltips
+- Quick log button
+
+✅ **Smart Insights**
+- **Reading**: "At 18 pages/day, you'll finish 24 books this year"
+- **Weight**: 7-day trend with rate of change
+- **Workout**: Total time comparisons and best days
+- **Generic**: Consistency analysis and day-of-week patterns
+
+✅ **Flexible Goals**
+- Backend support for weekend vs weekday goals
+- Easy to extend for goal ranges or weekly targets
+
+✅ **Notes System**
+- Add optional notes when logging
+- Backend stores notes per habit per day
+- API endpoint to retrieve notes (`/api/habits/:id/notes`)
+
+### **Visual Design**
+
+✅ **Light/Dark Mode**
+- System-aware default
+- Smooth theme transitions
+- Persistent preference (localStorage)
+- Beautiful color palettes for both modes
+
+✅ **Design System**
+- Gradient backgrounds
+- Glassmorphism effects
+- Smooth animations (modals, toasts, progress bars)
+- Consistent spacing and typography
+- Accessible color contrasts
+
+---
+
+## 🚀 Installation & Deployment
+
+### **1. File Structure**
+
+Replace your existing files:
+
+```bash
+/dev/apps/habits/
+├── server/
+│   └── index.js          # ← REPLACE with new backend
+├── public/
+│   ├── index.html        # ← REPLACE with new UI
+│   └── app.js            # ← REPLACE with new logic
+├── Dockerfile
+├── docker-compose.yml
+└── README.md
+```
+
+### **2. Deploy**
+
+```bash
+cd /dev/apps/habits
+
+# Copy new files
+cp /path/to/new/index.js server/index.js
+cp /path/to/new/index.html public/index.html
+cp /path/to/new/app.js public/app.js
+
+# Rebuild and restart
+docker compose down
+docker compose up -d --build
+
+# Check logs
+docker logs -f habit-api
+```
+
+### **3. Verify**
+
+```bash
+# Health check
+curl http://127.0.0.1:9300/health
+
+# Via Caddy
+curl -H "Host: habits.divyekant.com" http://127.0.0.1:8080/health
+
+# Open in browser
+open https://habits.divyekant.com
+```
+
+---
+
+## 📱 Usage Guide
+
+### **Creating Habits**
+
+1. Click "✨ Create Habit" in header
+2. Choose a template card (or Custom)
+3. Fill in name, unit, and daily goal
+4. Optionally enable "Different goals for weekends"
+5. Click "Create Habit"
+
+**Template Examples:**
+- **Reading**: 20 pages/day → "You'll read 24 books this year"
+- **Workout**: 30 min/day → Track consistency and total time
+- **Weight**: 0.5 kg goal → See 7-day moving average and trend
+- **Water**: 2 L/day → Track hydration consistency
+
+### **Logging Habits**
+
+1. Click "📝 Log Today" on any habit
+2. See context: yesterday's amount, current streak, goal, 7-day avg
+3. Either:
+   - Click "🎯 Hit Goal" (pre-fills goal amount)
+   - Click "⏭️ Skip Today" (logs 0)
+   - Enter custom amount and click "✅ Log It"
+4. Optionally add a note (e.g., "Felt great!" or "Tough day")
+5. When you hit your goal → **Confetti animation! 🎉**
+
+### **Viewing Stats**
+
+- **Overview Card**: Shows all habits with trends, completion rates, streaks
+- **Toggle Views**: Switch between 7-day, 30-day, 90-day windows
+- **Heatmap**: Hover over cells to see date, amount, and completion status
+- **Insights**: Smart suggestions based on your habit type and patterns
+
+### **Habit Details**
+
+1. Click any habit name in the list or stats
+2. See full detail modal with:
+   - Large icon and habit metadata
+   - Quick stats (current streak, longest, days logged, avg)
+   - Personal best 🏆
+   - Full 30-day heatmap
+   - Quick log button
+
+### **Archiving & Deleting**
+
+- **Archive**: Click "📦 Archive" → habit moves to "Archived" section
+- **Unarchive**: Click "📥 Unarchive" to restore
+- **Delete**: Click "🗑️" → permanent deletion (cannot be undone)
+
+### **Theme Toggle**
+
+- Click theme button in header (🌙 / ☀️)
+- Preference is saved automatically
+- All colors smoothly transition
+
+---
+
+## 🎨 Design Tokens
+
+### **Dark Mode (Default)**
+```css
+--bg-primary: #0b1020
+--bg-secondary: #131a2a
+--text-primary: #e7eeff
+--accent: #7aa2ff
+--success: #2ecc71
+--warning: #ffb020
+--error: #ff5d5d
+```
+
+### **Light Mode**
+```css
+--bg-primary: #f8f9fb
+--bg-secondary: #ffffff
+--text-primary: #1a202c
+--accent: #4c6ef5
+--success: #2ecc71
+--warning: #f59e0b
+--error: #ef4444
+```
+
+### **Habit Type Colors**
+- Reading: Purple `#9b7ff5`
+- Workout: Orange `#ff8c42`
+- Weight: Cyan `#42d4ff`
+- Water: Blue `#4287ff`
+- Sleep: Indigo `#6366f1`
+- Custom: Gray `#8ea0c2`
+
+---
+
+## 🔧 API Reference (Updated)
+
+### **Create Habit (Enhanced)**
+
+```bash
+POST /api/habits
+Content-Type: application/json
+
+{
+  "name": "Evening Reading",
+  "type": "reading",
+  "unit": "pages",
+  "dailyGoal": 20,
+  "dailyGoalWeekend": 30  # NEW: optional weekend goal
+}
+```
+
+### **Log with Note (Enhanced)**
+
+```bash
+POST /api/habits/:id/done
+Content-Type: application/json
+
+{
+  "date": "2025-11-11",
+  "amount": 25,
+  "note": "Finished chapter 3 - great plot twist!"  # NEW: optional
+}
+```
+
+### **Get Notes (New Endpoint)**
+
+```bash
+GET /api/habits/:id/notes
+
+Response:
+{
+  "notes": {
+    "2025-11-10": "Felt tired but pushed through",
+    "2025-11-09": "Amazing session today!",
+    ...
+  }
+}
+```
+
+---
+
+## 🎯 Feature Highlights
+
+### **Confetti Animation**
+- Canvas-based particle system
+- Triggers when goals are hit
+- 100 colorful particles with gravity physics
+- Auto-cleanup after animation
+
+### **Smart Insights**
+
+**Reading:**
+```
+💡 Reading Projection
+At 18.3 pages/day, you're on track for ~24 books this year.
+You read most on Saturdays.
+```
+
+**Weight:**
+```
+💡 Weight Trend
+↓ 1.2 kg over 30 days (0.28 kg/week). Great progress!
+```
+
+**Workout:**
+```
+💡 Workout Stats
+540 minutes this month. You're most active on Tuesdays (avg 45 min).
+```
+
+### **Trend Indicators**
+- **↑ Improving** (green): Completion rate increased >10% in last 15 days
+- **→ Stable** (blue): Steady performance
+- **↓ Declining** (red): Completion rate dropped >10%
+
+### **Responsive Heatmap**
+- Desktop: 30 cells in one row
+- Mobile: 15 cells per row (2 rows for 30 days)
+- Hover tooltips with date, amount, and status
+- Color intensity shows goal achievement
+
+---
+
+## 📊 Database Schema Updates
+
+### **New Keys**
+
+```
+ht:u:<uid>:note:<id>:<date>     # STRING: Optional note for the day
+```
+
+### **Enhanced Habit Metadata**
+
+```redis
+HGETALL ht:u:<uid>:habit:<id>
+{
+  "id": "abc123",
+  "name": "Read book",
+  "type": "reading",
+  "unit": "pages",
+  "dailyGoal": "20",
+  "dailyGoalWeekend": "30",      # NEW
+  "createdAt": "1731024000000",
+  "archived": "0"
+}
+```
+
+---
+
+## 🐛 Troubleshooting
+
+### **Theme not persisting**
+- Check browser localStorage: `localStorage.getItem('habits_theme')`
+- Clear cache and reload
+
+### **Confetti not showing**
+- Check browser console for errors
+- Canvas element requires modern browser
+
+### **Stats not loading**
+- Verify Redis connection: `curl http://localhost:9300/health/redis`
+- Check Docker logs: `docker logs habit-api`
+
+### **Modal not closing**
+- Press `Escape` key
+- Click outside modal (on overlay)
+
+### **Heatmap tooltips not working**
+- Ensure tooltips are re-initialized after stat renders
+- Check `setupHeatmapTooltips()` is called
+
+---
+
+## 🚀 Next Steps (Tier 3+)
+
+### **Planned Features**
+
+- [ ] PWA support (offline logging with sync queue)
+- [ ] Calendar view per habit (drill-down with monthly picker)
+- [ ] Edit past days (correct amounts and notes)
+- [ ] Habit chains (group related habits as routines)
+- [ ] Linked habits (auto-log when another is logged)
+- [ ] Browser notifications (daily reminders)
+- [ ] Weekly summary emails
+- [ ] Backup/restore with full logs (not just metadata)
+- [ ] Multi-language support
+
+### **Quick Wins (5-10 min each)**
+
+1. **Add PWA Manifest**
+```json
+{
+  "name": "Habits Tracker",
+  "short_name": "Habits",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#7aa2ff",
+  "icons": [...]
+}
+```
+
+2. **Add Undo Last Log**
+```javascript
+// Store last log in memory for 5 minutes
+// Show toast with "Undo" button
+// On undo, send DELETE to /api/habits/:id/undo
+```
+
+3. **Add Export Individual Habit**
+```javascript
+// In detail modal, add button:
+// "📥 Export as CSV"
+// Fetch stats and convert to CSV format
+```
+
+---
+
+## 📝 Changelog
+
+### **v2.0.0** (2025-11-11)
+- ✨ Complete UI redesign with Tier 1 & 2 features
+- 🎨 Light/dark mode toggle
+- 🎉 Confetti animation on goal hits
+- 💡 Smart insights for reading, weight, workout
+- 📊 Habit detail modal with personal bests
+- 📝 Notes system for daily reflections
+- 🎯 Flexible goals (weekend support)
+- 📱 Mobile-optimized responsive design
+- ⚡ Performance improvements
+- 🐛 Bug fixes and stability improvements
+
+### **v1.0.0** (2025-11-10)
+- 🚀 Initial release with basic tracking
+
+---
+
+## 📄 License
+
+MIT License - feel free to use and modify!
+
+---
+
+## 🙏 Credits
+
+Built with:
+- Express.js + Redis
+- Vanilla JavaScript (no frameworks!)
+- CSS Variables for theming
+- Canvas API for confetti
+- Love for habit tracking ❤️
+
+---
+
+**Enjoy building better habits! 🎯**
+
+For questions or issues, check the logs or open an issue.

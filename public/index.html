@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Habits - Daily Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+          <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+  <canvas id="confetti-canvas"></canvas>
+  
+  <!-- Motivational Quote Banner -->
+  <!-- <div class="quote-banner" id="quoteBanner">
+    <div class="quote-text" id="quoteText">Loading...</div>
+    <div class="quote-author" id="quoteAuthor"></div>
+  </div> -->
+  
+  <header>
+    <h1>
+      <span>🎯</span>
+      Habits
+    </h1>
+    <div class="header-actions">
+      <button class="theme-toggle" id="themeToggle">
+        <span id="themeIcon">🌙</span>
+        <span id="themeLabel">Dark</span>
+      </button>
+      <button class="btn-primary" id="createHabitBtn">
+        ✨ Create Habit
+      </button>
+    </div>
+  </header>
+  
+  <!-- Add this AFTER the header, BEFORE main -->
+  <div class="quote-card">
+    <div class="quote-icon">💡</div>
+    <div class="quote-content">
+      <div class="quote-text" id="quoteText">Loading...</div>
+      <div class="quote-author" id="quoteAuthor"></div>
+    </div>
+  </div>
+
+  <main>
+    <div class="layout-grid">
+      <!-- Habits List -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>📋</span>
+            Your Habits
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <a class="btn" href="/api/export?format=json&attachment=1" download>
+              📥 Export
+            </a>
+          </div>
+        </div>
+        <div id="habitsList">
+          <div class="loading">
+            <div class="spinner"></div>
+            Loading habits...
+          </div>
+        </div>
+      </div>
+      
+      <!-- Stats Overview -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>📊</span>
+            Overview
+          </div>
+        </div>
+        
+        <div class="view-toggles" id="statsViewToggles">
+          <button class="view-toggle active" data-view="7">7 Days</button>
+          <button class="view-toggle" data-view="30">30 Days</button>
+          <button class="view-toggle" data-view="90">90 Days</button>
+        </div>
+        
+        <div id="statsContainer">
+          <div class="loading">
+            <div class="spinner"></div>
+            Loading stats...
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <!-- Create/Edit Habit Modal -->
+  <div class="modal-overlay" id="habitModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>✨</span>
+          <span id="habitModalTitle">Create New Habit</span>
+        </div>
+        <div class="modal-close" onclick="closeHabitModal()">×</div>
+      </div>
+      <div class="modal-body">
+        <div style="margin-bottom: 20px;">
+          <div class="input-label">Choose a template</div>
+          <div class="template-grid" id="templateGrid">
+            <div class="template-card" data-type="reading" data-unit="pages" data-goal="20">
+              <div class="icon">📚</div>
+              <div class="name">Reading</div>
+              <div class="hint">pages/day</div>
+            </div>
+            <div class="template-card" data-type="workout" data-unit="minutes" data-goal="30">
+              <div class="icon">💪</div>
+              <div class="name">Workout</div>
+              <div class="hint">min/day</div>
+            </div>
+            <div class="template-card" data-type="weight" data-unit="kg" data-goal="0">
+              <div class="icon">⚖️</div>
+              <div class="name">Weight</div>
+              <div class="hint">track kg</div>
+            </div>
+            <div class="template-card" data-type="water" data-unit="liters" data-goal="2">
+              <div class="icon">💧</div>
+              <div class="name">Water</div>
+              <div class="hint">L/day</div>
+            </div>
+            <div class="template-card" data-type="sleep" data-unit="hours" data-goal="8">
+              <div class="icon">😴</div>
+              <div class="name">Sleep</div>
+              <div class="hint">hours/night</div>
+            </div>
+            <div class="template-card" data-type="meditation" data-unit="minutes" data-goal="10">
+              <div class="icon">🧘</div>
+              <div class="name">Meditation</div>
+              <div class="hint">min/day</div>
+            </div>
+            <div class="template-card" data-type="coding" data-unit="minutes" data-goal="60">
+              <div class="icon">💻</div>
+              <div class="name">Coding</div>
+              <div class="hint">min/day</div>
+            </div>
+            <div class="template-card" data-type="exercise" data-unit="steps" data-goal="10000">
+              <div class="icon">🏃</div>
+              <div class="name">Exercise</div>
+              <div class="hint">steps/day</div>
+            </div>
+            <div class="template-card" data-type="nutrition" data-unit="servings" data-goal="5">
+              <div class="icon">🥗</div>
+              <div class="name">Nutrition</div>
+              <div class="hint">servings/day</div>
+            </div>
+            <div class="template-card" data-type="social" data-unit="calls" data-goal="1">
+              <div class="icon">👥</div>
+              <div class="name">Social</div>
+              <div class="hint">calls/day</div>
+            </div>
+            <div class="template-card" data-type="learning" data-unit="minutes" data-goal="30">
+              <div class="icon">📖</div>
+              <div class="name">Learning</div>
+              <div class="hint">min/day</div>
+            </div>
+            <div class="template-card active" data-type="custom" data-unit="" data-goal="1">
+              <div class="icon">✨</div>
+              <div class="name">Custom</div>
+              <div class="hint">your choice</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="input-group">
+          <label class="input-label">Habit Name</label>
+          <input type="text" id="habitName" placeholder="e.g., Read book, Morning run" />
+          <div class="input-hint">Give your habit a clear, motivating name</div>
+        </div>
+        
+        <div class="input-group">
+          <label class="input-label">Unit</label>
+          <input type="text" id="habitUnit" placeholder="e.g., pages, minutes, kg, liters" />
+          <div class="input-hint">What are you measuring?</div>
+        </div>
+        
+        <div class="input-group">
+          <label class="input-label">Daily Goal</label>
+          <input type="number" id="habitGoal" placeholder="e.g., 20" min="0" step="0.1" />
+          <div class="input-hint">Your target amount per day (0 for tracking only)</div>
+        </div>
+        
+        <label class="checkbox-wrapper">
+          <input type="checkbox" id="variableGoals" />
+          <span class="input-label">Different goals for weekends</span>
+        </label>
+        
+        <div id="weekendGoalSection" style="display: none;">
+          <div class="input-group">
+            <label class="input-label">Weekend Goal</label>
+            <input type="number" id="habitGoalWeekend" placeholder="e.g., 30" min="0" step="0.1" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="closeHabitModal()">Cancel</button>
+        <button class="btn-primary" id="saveHabitBtn">
+          <span id="saveHabitText">Create Habit</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Log Habit Modal -->
+  <div class="modal-overlay" id="logModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title" id="logModalTitle">
+          <span>📝</span>
+          Log Habit
+        </div>
+        <div class="modal-close" onclick="closeLogModal()">×</div>
+      </div>
+      <div class="modal-body">
+        <div class="log-context" id="logContext">
+          <div class="log-context-item">
+            <div class="log-context-label">Yesterday</div>
+            <div class="log-context-value" id="logYesterday">—</div>
+          </div>
+          <div class="log-context-item">
+            <div class="log-context-label">Current Streak</div>
+            <div class="log-context-value" id="logStreak">—</div>
+          </div>
+          <div class="log-context-item">
+            <div class="log-context-label">Goal</div>
+            <div class="log-context-value" id="logGoal">—</div>
+          </div>
+          <div class="log-context-item">
+            <div class="log-context-label">Avg/Day (7d)</div>
+            <div class="log-context-value" id="logAvg">—</div>
+          </div>
+        </div>
+        
+        <div class="quick-log-buttons">
+          <button class="btn-success btn-large" id="quickGoalBtn">
+            🎯 Hit Goal
+          </button>
+          <button class="btn btn-large" id="quickSkipBtn">
+            ⏭️ Skip Today
+          </button>
+        </div>
+        
+        <div class="input-label" style="text-align: center; margin-bottom: 8px;">Or enter custom amount:</div>
+        
+        <div class="amount-input-wrapper">
+          <input type="number" id="logAmount" placeholder="0" min="0" step="0.1" />
+          <div class="stepper-buttons">
+            <button data-step="1">+1</button>
+            <button data-step="5">+5</button>
+            <button data-step="10">+10</button>
+            <button data-step="-1">-1</button>
+          </div>
+        </div>
+        
+        <div class="input-group">
+          <label class="input-label">Note (optional)</label>
+          <textarea id="logNote" rows="2" placeholder="Add a note about today..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="closeLogModal()">Cancel</button>
+        <button class="btn-primary btn-large" id="submitLogBtn">
+          ✅ Log It
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Habit Detail Modal -->
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title" id="detailModalTitle">
+          <span>📊</span>
+          Habit Details
+        </div>
+        <div class="modal-close" onclick="closeDetailModal()">×</div>
+      </div>
+      <div class="modal-body" id="detailModalBody">
+        <!-- Dynamic content will be inserted here -->
+      </div>
+    </div>
+  </div>
+  
+  <!-- Tooltip -->
+  <div class="tooltip" id="tooltip"></div>
+  
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+  
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+services:
+  habit-api:
+    build: .
+    container_name: habit-api
+    ports: ["9300:9300"]
+    environment:
+      - NODE_ENV=production
+      - PORT=9300
+      - REDIS_URL=${REDIS_URL}
+      - ALLOW_X_USER=${ALLOW_X_USER}
+    networks: [web_tunnel]
+
+networks:
+  web_tunnel:
+    external: true
